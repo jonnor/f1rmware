@@ -21,6 +21,7 @@ fsm:
 	node ../finito/bin/finito generate -o machine.fsm.c machine.fsm
 dot:
 	node ../finito/bin/finito dot -o machine.fsm.dot machine.fsm
+	dot -Tpng -Ksfdp machine.fsm.dot -o machine.fsm.png
 
 finito.c1d: fsm
 
