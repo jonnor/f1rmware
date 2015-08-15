@@ -16,8 +16,11 @@ include ../Makefile.inc
 $(TABLEFILES): EXPORTS mktable.pl
 	./mktable.pl
 
+# FIXME: make these generic rules
 fsm:
 	node ../finito/bin/finito generate -o machine.fsm.c machine.fsm
+dot:
+	node ../finito/bin/finito dot -o machine.fsm.dot machine.fsm
 
 finito.c1d: fsm
 

@@ -1,7 +1,12 @@
 name = TestMachine
 initial = init
-# exit = done
+exit = done
 
 init() [up_pressed]=> up()
 up [down_pressed]=> down()
 down [up_pressed]=> up
+
+# would be nice to have * for all states, or comma-separate list
+up [enter_pressed]=> done()
+down [enter_pressed]=> done
+init [enter_pressed]=> done

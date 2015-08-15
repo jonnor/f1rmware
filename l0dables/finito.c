@@ -84,7 +84,7 @@ void ram(void) {
   TestMachine state;
   FinitoMachine machine;
 
-  // FIXME: move into init()
+  // FIXME: move into init() state
   setExtFont(GLOBAL(nickfont));
   showTextCentered(GLOBAL(nickname));
   getInputWaitRelease();
@@ -92,12 +92,12 @@ void ram(void) {
   finito_machine_init(&machine, &TestMachine_def, &state);
   machine.on_state_change = print_transition;
 
-  // FIXME: run until machine stops/exists. Should have while(finito_machine_running(&machine))
-  while (1) {
+  while (finito_machine_running(&machine)) {
     state.button_pressed = getInput();
     finito_machine_run(&machine);
   }
 
+  // FIXME: move into done() state
   //getInputWait();
   setTextColor(0xFF,0x00); // reset to normal
 
