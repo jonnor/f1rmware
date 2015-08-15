@@ -7,6 +7,7 @@ l0dables: usetable.h $(C1D) $(N1K)
 
 CFLAGS=-Wno-unused-variable -DRAD1O -DLPC43XX_M4 -DL0DABLE
 CFLAGS+=-mlong-calls # XXX: do we need those?
+CFLAGS+=-I../finito/lib/c/
 
 LDSCRIPT=../ld/l0dable.ld
 RPATH=..
@@ -15,8 +16,18 @@ include ../Makefile.inc
 $(TABLEFILES): EXPORTS mktable.pl
 	./mktable.pl
 
+fsm:
+	node ../finito/bin/finito generate -o machine.fsm.c machine.fsm
+
+finito.c1d: fsm
+
+flash: finito.c1d
+	cp finito.c1d /run/media/jon/841C-FD25/
+	umount /run/media/jon/841C-FD25/
+
 clean::
 	$(RM) $(TABLEFILES)
 	$(RM) -f *.n1k *.c1d *.o *.elf
 #	$(RM) $(C1D:%.c1d=%.o) $(C1D:%.c1d=%.elf) $(C1D)
 #	$(RM) $(N1K:%.n1k=%.o) $(N1K:%.n1k=%.elf) $(N1K)
+

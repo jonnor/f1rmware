@@ -1,0 +1,5 @@
+name = TestMachine
+initial = start
+
+start() [up_pressed]=> up()
+up [down_pressed]=> down()
