@@ -1,5 +1,7 @@
 name = TestMachine
-initial = start
+initial = init
+# exit = done
 
-start() [up_pressed]=> up()
+init() [up_pressed]=> up()
 up [down_pressed]=> down()
+down [up_pressed]=> up
