@@ -2,11 +2,18 @@ name = TestMachine
 initial = init
 exit = done
 
-init() [up_pressed]=> up()
-up [down_pressed]=> down()
+# states
+init{enter=init}
+up{enter=up}
+done{enter=done}
+down{enter=down}
+
+# transitions
+init{enter=init} [up_pressed]=> up{enter=up}
+up [down_pressed]=> down
 down [up_pressed]=> up
 
 # would be nice to have * for all states, or comma-separate list
-up [enter_pressed]=> done()
+up [enter_pressed]=> done
 down [enter_pressed]=> done
 init [enter_pressed]=> done

@@ -51,6 +51,9 @@ void down(TestMachine *state) {
   showTextCentered("down");         
 }
 
+void done(TestMachine *state) {
+  // bye!
+}
 
 // Transitions predicates
 // FIXME: allow generating these
@@ -75,7 +78,7 @@ bool right_pressed(const TestMachine *state) {
 void
 print_transition(FinitoMachine *fsm, FinitoStateId old, FinitoStateId new_state) {
 
-  showTextCentered(finito_definition_statename(fsm->def, new_state));
+  // showTextCentered(finito_definition_statename(fsm->def, new_state));
   // "state changed: %s -> %s\n",
   //  finito_definition_statename(fsm->def, old)
 }
