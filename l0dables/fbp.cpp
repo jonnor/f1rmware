@@ -152,20 +152,26 @@ microflo_graph */
 #include "main.h" // generated graph definition
 
 void ram(void) {
-
   NullIO io;
   NullHostTransport transport; // TODO; enable serial for live
   Network network(&io);
   HostCommunication controller;
+
   transport.setup(&io, &controller);
   controller.setup(&network, &transport);
-
-  MICROFLO_LOAD_STATIC_GRAPH((&controller), graph);
+  
+  void *dynamic = malloc(100);
+  if (dynamic) {
+    showTextCentered("malloc works");
+  } else {
+    showTextCentered("malloc broken");
+  }
+  //MICROFLO_LOAD_STATIC_GRAPH((&controller), graph); // FIXME: malloc is broken...
 
   // TODO: allow to stop network
   while (1) {
-    transport.runTick();
-    network.runTick();
+    //transport.runTick();
+    //network.runTick();
   }
 
   return; 
