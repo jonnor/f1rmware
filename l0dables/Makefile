@@ -7,10 +7,17 @@ l0dables: usetable.h $(C1D) $(N1K)
 
 CFLAGS=-Wno-unused-variable -DRAD1O -DLPC43XX_M4 -DL0DABLE
 CFLAGS+=-mlong-calls # XXX: do we need those?
+CFLAGS+=-I./microflo/
 
 LDSCRIPT=../ld/l0dable.ld
 RPATH=..
 include ../Makefile.inc
+
+gen-fbp:
+	node ./microflo/microflo.js generate fbp.cpp ./ --target linux --library microflo-core/components/linux-standard.json
+
+fbp.c1d: gen-fbp
+
 
 $(TABLEFILES): EXPORTS mktable.pl
 	./mktable.pl
