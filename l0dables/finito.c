@@ -40,7 +40,6 @@ typedef struct _TestMachine {
 
 // State functions
 void init(TestMachine *state) {
-  state->button_pressed = BTN_NONE;
   setExtFont(GLOBAL(nickfont));
   showTextCentered(GLOBAL(nickname));
   getInputWaitRelease();
@@ -51,7 +50,7 @@ void up(TestMachine *state) {
 }
 
 void down(TestMachine *state) {
-  showTextCentered("down");         
+  showTextCentered("down");
 }
 
 void done(TestMachine *state) {
@@ -79,7 +78,6 @@ bool right_pressed(const TestMachine *state) {
 
 void
 print_transition(FinitoMachine *fsm, FinitoStateId old_state, FinitoStateId new_state) {
-
   return; // uncomment for debug
 
   const size_t STR_MAX = 100;
@@ -94,8 +92,8 @@ print_transition(FinitoMachine *fsm, FinitoStateId old_state, FinitoStateId new_
 
 #include "machine.fsm.c" // our FSM definition
 void ram(void) {
-  TestMachine state;
   FinitoMachine machine;
+  TestMachine state = { BTN_NONE };
 
   finito_machine_init(&machine, &TestMachine_def, &state);
   machine.on_state_change = print_transition;
