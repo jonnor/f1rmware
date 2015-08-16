@@ -12,10 +12,6 @@
 #include <r0ketlib/config.h>
 #include <r0ketlib/render.h>
 
-extern "C" {
-#include <rad1olib/sbrk.c>
-}
-
 #define MICROFLO_EMBED_GRAPH
 #include <microflo/microflo.h>
 #include <microflo/io.hpp>
@@ -36,15 +32,21 @@ extern "C" {
     }
 };
 
+static const size_t G_STATIC_MEMORY_SIZE = 1*1024;
+static uint8_t g_memory[G_STATIC_MEMORY_SIZE] = { 0 };
+static size_t g_mem_offset = 0;
+
 void *operator new(size_t n)
 {
-  void * const p = malloc(n);
-  // TODO: handle p == 0 ?
-  return p;
+  if (g_mem_offset+n >= G_STATIC_MEMORY_SIZE) {
+    return NULL;
+  }
+  return (void *)g_memory[g_mem_offset];
+  g_mem_offset += n;
 }
 void operator delete(void * p)
 {
-  free(p);
+  // Do nothing, once memory is allocated it is busy
 }
 
 void
@@ -160,13 +162,15 @@ void ram(void) {
   transport.setup(&io, &controller);
   controller.setup(&network, &transport);
   
-  void *dynamic = malloc(100);
+  void *dynamic = new ReadJoystick;
   if (dynamic) {
-    showTextCentered("malloc works");
+    showTextCentered("new works");
   } else {
-    showTextCentered("malloc broken");
+    showTextCentered("new broken");
   }
-  //MICROFLO_LOAD_STATIC_GRAPH((&controller), graph); // FIXME: malloc is broken...
+  MICROFLO_LOAD_STATIC_GRAPH((&controller), graph);
+
+  showTextCentered("loaded graph");
 
   // TODO: allow to stop network
   while (1) {
