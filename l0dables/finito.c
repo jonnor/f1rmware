@@ -41,6 +41,9 @@ typedef struct _TestMachine {
 // State functions
 void init(TestMachine *state) {
   state->button_pressed = BTN_NONE;
+  setExtFont(GLOBAL(nickfont));
+  showTextCentered(GLOBAL(nickname));
+  getInputWaitRelease();
 }
 
 void up(TestMachine *state) {
@@ -52,7 +55,7 @@ void down(TestMachine *state) {
 }
 
 void done(TestMachine *state) {
-  // bye!
+  setTextColor(0xFF,0x00); // reset to normal?
 }
 
 // Transitions predicates
@@ -87,11 +90,6 @@ void ram(void) {
   TestMachine state;
   FinitoMachine machine;
 
-  // FIXME: move into init() state
-  setExtFont(GLOBAL(nickfont));
-  showTextCentered(GLOBAL(nickname));
-  getInputWaitRelease();
-
   finito_machine_init(&machine, &TestMachine_def, &state);
   machine.on_state_change = print_transition;
 
@@ -99,10 +97,6 @@ void ram(void) {
     state.button_pressed = getInput();
     finito_machine_run(&machine);
   }
-
-  // FIXME: move into done() state
-  //getInputWait();
-  setTextColor(0xFF,0x00); // reset to normal
 
   return;
   
