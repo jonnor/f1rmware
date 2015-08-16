@@ -76,16 +76,23 @@ bool right_pressed(const TestMachine *state) {
   return state->button_pressed == BTN_RIGHT;
 }
 
-#include "machine.fsm.c" // our FSM definition
 
 void
-print_transition(FinitoMachine *fsm, FinitoStateId old, FinitoStateId new_state) {
+print_transition(FinitoMachine *fsm, FinitoStateId old_state, FinitoStateId new_state) {
 
-  // showTextCentered(finito_definition_statename(fsm->def, new_state));
-  // "state changed: %s -> %s\n",
-  //  finito_definition_statename(fsm->def, old)
+  return; // uncomment for debug
+
+  const size_t STR_MAX = 100;
+  char str[STR_MAX+1];
+
+  strncpy(str, finito_definition_statename(fsm->def, old_state), STR_MAX);
+  strncat(str, " -> ", STR_MAX);
+  strncat(str, finito_definition_statename(fsm->def, new_state), STR_MAX);
+
+  showTextCentered(str);
 }
 
+#include "machine.fsm.c" // our FSM definition
 void ram(void) {
   TestMachine state;
   FinitoMachine machine;
